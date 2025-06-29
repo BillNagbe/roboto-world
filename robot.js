@@ -145,4 +145,12 @@ function goalOrientedRobot({place, parcels}, route) { // to check if a route has
 }
 
 
+
+function compareRobots(robot1, memory1, robot2, memory2) {
+    let task, steps;
+    if(memory.length == 0) { memory = mailRoute}; 
+    return {direction: memory[0], memory: memory.slice(1)};
+}
+
+
 runRobot(VillageState.random(), goalOrientedRobot, []);
