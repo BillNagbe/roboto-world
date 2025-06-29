@@ -1,6 +1,6 @@
 // helper functions
 
-function randomizor(array) {
+function randomizor(array) { // goal to return a random value based on the passed array
     return array[Math.floor(Math.random() * array.length)];
 }
 
@@ -66,22 +66,56 @@ class VillageState {
 
 function runRobot(state, robot, memory) { // goal to make the robot move
   for (let turn = 0; ;turn++) { // starts a endless loop
-    if (state.parcels.length == 0) { // checks state parcel length value
+    if (state.parcels.length == 0) { // checks state parcels length value
       console.log(`Done in ${turn} turns`); // prints out when the loop is done
-      break;
+      break; // exit the loop
     }
-    let action = robot(state, memory); // calls the robot function with a current state and memory 
-    state = state.move(action.direction); // state variable moves in the direction within the action property
-    memory = action.memory; // memory set to the memory property with in action
-    console.log(`Moved to ${action.direction}`); // prints the direction for the robot to move in
+    let action = robot(state, memory); // calls the passed function with a current point and prevs points 
+    state = state.move(action.direction); // passed object move property is called with the action direction
+    memory = action.memory; // set prevs state to the current state
+    console.log(`Moved to ${action.direction}`); // prints the direction the object is expected to move in
   }
 }
 
 
 // returns a random direction from the robo
 
-function randomRobot(state) {
-  return {direction: randomizor(roadGraph[state.place])};
+function randomRobot(state) { // goal checks for the direction of robots state with in the roadGraph
+  return {direction: randomizor(roadGraph[state.place])}; // returns random direction 
 }
 
 
+//
+
+
+VillageState.random = (parcelCount = 5) => { // static method with inital val set to 5, goal 
+  let parcels = [];
+  for(let i = 0; i < parcelCount; i++) {
+    let address = randomizor(Object.keys(roadGraph));
+    let place;
+    do {
+      place = randomizor(Object.keys(roadGraph));
+    } while(place == address);
+    parcels.push({place, address});
+  }
+
+  return new VillageState("Post Office", parcels);
+}
+
+// mail route array
+
+const mailRoute = [
+  "Alice's House", "Cabin", "Alice's House", "Bob's House",
+  "Town Hall", "Daria's House", "Ernie's House",
+  "Grete's House", "Shop", "Grete's House", "Farm",
+  "Marketplace", "Post Office"
+];
+
+
+function routeRobot(state, memory) {
+  if(memory.length == 0) { memory = mailRoute};
+  return {direction: memory[0], memory: memory.slice(1)};
+}
+
+
+runRobot(VillageState.random(), routeRobot, []);
