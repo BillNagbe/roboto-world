@@ -89,17 +89,17 @@ function randomRobot(state) { // goal checks for the direction of robots state w
 
 
 VillageState.random = (parcelCount = 5) => { // static method with inital val set to 5, goal 
-  let parcels = [];
-  for(let i = 0; i < parcelCount; i++) {
-    let address = randomizor(Object.keys(roadGraph));
-    let place;
+  let parcels = []; // parcels set to an empty 
+  for(let i = 0; i < parcelCount; i++) { // starts a loop with passed value as stopping condition
+    let address = randomizor(Object.keys(roadGraph)); // returns a random key from the roadGraph
+    let place; // place initalized 
     do {
-      place = randomizor(Object.keys(roadGraph));
-    } while(place == address);
-    parcels.push({place, address});
+      place = randomizor(Object.keys(roadGraph)); // set place to a array of roadGraph keys
+    } while(place == address); // stop when the place and the address are the same
+    parcels.push({place, address}); // push the destructured place and address values into the place array
   }
 
-  return new VillageState("Post Office", parcels);
+  return new VillageState("Post Office", parcels); // updates the villageState with the parcel arrays
 }
 
 // mail route array
@@ -112,7 +112,7 @@ const mailRoute = [
 ];
 
 
-function routeRobot(state, memory) {
+function routeRobot(state, memory) { // goal to make the robot route
   if(memory.length == 0) { memory = mailRoute};
   return {direction: memory[0], memory: memory.slice(1)};
 }
