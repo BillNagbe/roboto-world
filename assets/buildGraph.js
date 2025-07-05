@@ -3,10 +3,10 @@
 function buildGraph(edges) {
   let graph = Object.create(null); // creates an empty an object
   function addEdge(from, to) {
-    if (from in graph) { // loops thru the array
-      graph[from].push(to); // assigns the from element in the graph object as a property which should be an array that holds the inital start point (from) and the end point(to)
+    if (from in graph) { // loops thru the obj and checks if the key is in the object
+      graph[from].push(to); // if the obj key is in the object we assign the to value to that key
     } else {
-      graph[from] = [to]; // sets the from property equal to the to 
+      graph[from] = [to]; // sets the key property to value  
     }
   }
   for (let [from, to] of edges.map(r => r.split("-"))) {
@@ -15,6 +15,9 @@ function buildGraph(edges) {
   }
   return graph;
 }
+
+
+export {buildGraph};
 
 
 
